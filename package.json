@@ -1,0 +1,25 @@
+{
+  "name": "chordprojs",
+  "version": "1.0.0",
+  "description": "Parse and manipulate ChordPro files.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/tvdavies/chordprojs.git"
+  },
+  "keywords": [
+    "ChordPro"
+  ],
+  "author": "Tom Davies",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tvdavies/chordprojs/issues"
+  },
+  "homepage": "https://github.com/tvdavies/chordprojs#readme",
+  "dependencies": {
+    "chord-magic": "^1.0.0"
+  }
+}
