@@ -1,0 +1,33 @@
+{{#song}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>{{title}}</title>
+</head>
+<body>
+<div class="song">
+	<h1 class="song-title">{{title}}</h1>
+	<h3 class="song-subtitle">{{subtitle}}</h3>
+	{{#sections}}
+	<div class="song-section">
+		{{#lines}}
+		<table class="song-line" cellspacing="0" cellpadding="0">
+			<tr class="song-chords">
+			{{#lineSegments}}
+				<td>{{{formattedChord}}}</td>
+			{{/lineSegments}}
+			</tr>
+			<tr class="song-text">
+			{{#lineSegments}}
+				<td>{{{formattedText}}}</td>
+			{{/lineSegments}}
+			</tr>
+		</table>
+		{{/lines}}
+	</div>
+	{{/sections}}
+</div>
+</body>
+</html>
+{{/song}}

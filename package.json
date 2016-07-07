@@ -20,6 +20,11 @@
   },
   "homepage": "https://github.com/tvdavies/chordprojs#readme",
   "dependencies": {
-    "chord-magic": "^1.0.0"
+    "chord-magic": "^1.0.0",
+    "html-pdf": "^2.0.1",
+    "mustache": "^2.2.1",
+    "octonode": "^0.7.6",
+    "q": "^1.4.1",
+    "request": "^2.72.0"
   }
 }
