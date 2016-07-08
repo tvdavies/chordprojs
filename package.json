@@ -22,6 +22,7 @@
   "dependencies": {
     "chord-magic": "^1.0.0",
     "html-pdf": "^2.0.1",
+    "lodash": "^4.13.1",
     "mustache": "^2.2.1",
     "octonode": "^0.7.6",
     "q": "^1.4.1",
