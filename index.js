@@ -1,5 +1,5 @@
 var templates = require("./lib/templates"),
-	chords = require("./lib/chords"),
+	Chords = require("./lib/chords").Chords,
 	mustache = require("mustache");
 
 function Song() {
@@ -13,6 +13,7 @@ function Song() {
 	this.time = "";
 	this.keywords = "";
 	this.sections = [];
+	this.chords = new Chords();
 }
 
 Song.prototype.addSection = function (section) {
@@ -42,6 +43,7 @@ function LineSegment(chord, text) {
 }
 
 function ChordProParser() {}
+
 ChordProParser.prototype.parse = (text) => {
 	var commentPattern = /^\s*#.*/;
 	var chordPattern = /\[([^\]]*)\]/;
@@ -49,7 +51,7 @@ ChordProParser.prototype.parse = (text) => {
 	var song = new Song();
 	var section = new Section();
 	var line = null;
-	var chord = "";
+	var chord = null;
 
 	text.split("\n").forEach((lineText) => {
 		if (lineText.trim() < 1) {
@@ -87,10 +89,14 @@ ChordProParser.prototype.parse = (text) => {
 				// Lyrics/chords
 				lineText.split(chordPattern).forEach((word, i) => {
 					if (i % 2 > 0) {
-						chord = word;
-					} else if (chord.length > 0 || word.length > 0) {
+						if (word.length > 0) {
+							chord = song.chords.createChord(word);
+						} else {
+							chord = null;
+						}
+					} else if (chord !== null || word.length > 0) {
 						line.addLineSegment(new LineSegment(chord, word));
-						chord = "";
+						chord = null;
 					}
 				});
 			}
@@ -105,23 +111,25 @@ ChordProParser.prototype.parse = (text) => {
 };
 
 function SongRenderer() {}
+
 SongRenderer.prototype.render = function (song, options) {
 	if (!options) {
 		options = {};
 	}
 
+	if (options.transpose) {
+		song.chords.setTranspose(options.transpose);
+	}
+
+	if (options.key) {
+		song.chords.setTargetKey(options.key);
+	}
+
 	return mustache.render(templates.song, {
 		song: song,
 		formattedChord: function () {
-			if (this.chord.length > 0) {
-				var transpose = options.transpose || 0;
-				var chord = chordMagic.parse(this.chord);
-
-				if (transpose !== 0) {
-					chord = chordMagic.transpose(chord, transpose);
-				}
-
-				return chordMagic.prettyPrint(chord).split("").map(value => {
+			if (this.chord !== null) {
+				return this.chord.getText().split("").map(value => {
 					if (value === "#") {
 						return '<span class="music-symbol" style="font-family: Arial Unicode MS, Lucida Sans Unicode;">♯</span>';
 					} else if (value === "b") {
