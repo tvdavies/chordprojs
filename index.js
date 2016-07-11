@@ -1,6 +1,6 @@
 var templates = require("./lib/templates"),
-	mustache = require("mustache"),
-	chordMagic = require("chord-magic");
+	chords = require("./lib/chords"),
+	mustache = require("mustache");
 
 function Song() {
 	this.title = "";
@@ -129,7 +129,7 @@ SongRenderer.prototype.render = function (song, options) {
 					}
 
 					return value;
-				}).join("");
+				}).join("") + "&nbsp;";
 			}
 
 			return "";

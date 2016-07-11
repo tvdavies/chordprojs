@@ -1,0 +1,17 @@
+div.song-section {
+	margin-bottom: 20px;
+}
+
+tr.song-chords td {
+	padding: 10px 0 5px 0;
+	font-family: 'Roboto', sans-serif;
+	font-weight: bold;
+}
+
+tr.song-text td {
+	font-family: 'Merriweather', serif;
+}
+
+table.song-line td {
+	vertical-align: bottom;
+}

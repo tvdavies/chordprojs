@@ -8,9 +8,13 @@ var parser = new ChordProParser();
 var renderer = new SongRenderer();
 
 // Read file from interweb
-request.get("https://raw.githubusercontent.com/mattgraham/worship/master/10000%20Reasons.onsong", (err, response, body) => {
+
+var url = "http://localhost:8080/need_you.txt";
+// var url = "https://raw.githubusercontent.com/mattgraham/worship/master/10000%20Reasons.onsong";
+
+request.get(url, (err, response, body) => {
 	var song = parser.parse(body);
-	var rendered = renderer.render(song);
+	var rendered = renderer.render(song, { transpose: 2 });
 	console.log(rendered);
 });
 
