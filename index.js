@@ -19,7 +19,7 @@ exports.parse = function (chordProStr) {
 	var line = null;
 	var chord = null;
 
-	chordProStr.split("\n").forEach((lineText) => {
+	chordProStr.split("\n").forEach(function (lineText) {
 		if (lineText.trim() < 1 && section.lines.length > 0) {
 			// Start a new section
 			song.addSection(section);
@@ -61,7 +61,7 @@ exports.parse = function (chordProStr) {
 				}
 			} else {
 				// Lyrics/chords
-				lineText.split(chordPattern).forEach((word, i) => {
+				lineText.split(chordPattern).forEach(function (word, i) {
 					if (i % 2 > 0) {
 						if (word.length > 0) {
 							chord = song.chords.createChord(word);
