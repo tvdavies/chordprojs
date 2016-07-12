@@ -1,6 +1,6 @@
 {
   "name": "chordprojs",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Parse and manipulate ChordPro files.",
   "main": "index.js",
   "scripts": {
