@@ -4,7 +4,7 @@
   "description": "Parse and manipulate ChordPro files.",
   "main": "index.js",
   "scripts": {
-    "test": "mocha tests --recursive"
+    "test": "./node_modules/mocha/bin/mocha"
   },
   "repository": {
     "type": "git",
@@ -25,6 +25,7 @@
     "mustache": "^2.2.1"
   },
   "devDependencies": {
-    "chai": "^3.5.0"
+    "chai": "^3.5.0",
+    "mocha": "^2.5.3"
   }
 }
