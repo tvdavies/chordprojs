@@ -1,5 +1,4 @@
-var templates = require("./lib/templates"),
-	Chords = require("./lib/chords").Chords,
+var Chords = require("./lib/chords").Chords,
 	mustache = require("mustache");
 
 function Song() {
@@ -54,7 +53,7 @@ ChordProParser.prototype.parse = (text) => {
 	var chord = null;
 
 	text.split("\n").forEach((lineText) => {
-		if (lineText.trim() < 1) {
+		if (lineText.trim() < 1 && section.lines.length > 0) {
 			// Start a new section
 			song.addSection(section);
 			section = new Section();
@@ -65,7 +64,6 @@ ChordProParser.prototype.parse = (text) => {
 
 		// Ignore any comments
 		if (!lineText.match(commentPattern)) {
-
 			// Command line
 			var directive = lineText.match(directivePattern);
 			if (directive) {
@@ -83,6 +81,15 @@ ChordProParser.prototype.parse = (text) => {
 					case "time":
 					case "keywords":
 						song[directiveName] = directiveValue;
+						break;
+					case "section":
+						if (section.lines.length > 0) {			
+							// Start a new section
+							song.addSection(section);
+							section = new Section();
+						}
+
+						section.name = directiveValue;
 						break;
 				}
 			} else {
@@ -102,7 +109,9 @@ ChordProParser.prototype.parse = (text) => {
 			}
 		}
 
-		section.addLine(line);
+		if (line.lineSegments.length > 0) {
+			section.addLine(line);
+		}
 	});
 
 	song.addSection(section);
@@ -113,6 +122,32 @@ ChordProParser.prototype.parse = (text) => {
 function SongRenderer() {}
 
 SongRenderer.prototype.render = function (song, options) {
+	var songTemplate = '{{#song}}\n' + 
+		'<div class="song">\n' + 
+		'<h1 class="song-title text-center">{{title}}</h1>\n' + 
+		'<h3 class="song-subtitle text-center">({{subtitle}})</h3>\n' +
+		'{{#sections}}\n' +
+		'<div class="song-section">\n' +
+		'<h3 class="song-section-name">{{name}}</h3>\n' +
+		'{{#lines}}\n' +
+		'<table class="song-line" cellspacing="0" cellpadding="0">\n' +
+		'<tr class="song-chords">\n' +
+		'{{#lineSegments}}\n' +
+		'<td>{{{formattedChord}}}</td>\n' +
+		'{{/lineSegments}}\n' +
+		'</tr>\n' +
+		'<tr class="song-text">\n' +
+		'{{#lineSegments}}\n' +
+		'<td>{{{formattedText}}}</td>\n' +
+		'{{/lineSegments}}\n' +
+		'</tr>\n' +
+		'</table>\n' +
+		'{{/lines}}\n' +
+		'</div>\n' +
+		'{{/sections}}\n' +
+		'</div>' + 
+		'{{/song}}';
+
 	if (!options) {
 		options = {};
 	}
@@ -125,7 +160,7 @@ SongRenderer.prototype.render = function (song, options) {
 		song.chords.setTargetKey(options.key);
 	}
 
-	return mustache.render(templates.song, {
+	return mustache.render(songTemplate, {
 		song: song,
 		formattedChord: function () {
 			if (this.chord !== null) {
