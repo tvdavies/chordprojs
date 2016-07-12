@@ -4,7 +4,7 @@
   "description": "Parse and manipulate ChordPro files.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha tests --recursive"
   },
   "repository": {
     "type": "git",
@@ -21,11 +21,10 @@
   "homepage": "https://github.com/tvdavies/chordprojs#readme",
   "dependencies": {
     "chord-magic": "^1.0.0",
-    "html-pdf": "^2.0.1",
     "lodash": "^4.13.1",
-    "mustache": "^2.2.1",
-    "octonode": "^0.7.6",
-    "q": "^1.4.1",
-    "request": "^2.72.0"
+    "mustache": "^2.2.1"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0"
   }
 }
