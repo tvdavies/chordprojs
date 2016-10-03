@@ -10,7 +10,8 @@ var Song = require('./lib/song');
  * @param  {string}		chordProStr		The ChordPro string to parse
  * @return {Song}
  */
-exports.parse = function (chordProStr) {
+module.exports = {
+    parse: function (chordProStr) {
 	var commentPattern = /^\s*#.*/;
 	var chordPattern = /\[([^\]]*)\]/;
 	var directivePattern = /^{([\w]*):?(.*)?}/;
@@ -84,4 +85,5 @@ exports.parse = function (chordProStr) {
 	song.addSection(section);
 
 	return song;
+    }
 };

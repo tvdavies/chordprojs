@@ -108,7 +108,7 @@ function getRootNote(chord) {
 function findKey(chords) {
     var keys = _.countBy(_.flatten(chords.map(function (chord) {
         var note = getRootNote(chord);
-        var chord = chord.substring(note.length);
+        chord = chord.substring(note.length);
         if ((chord.indexOf('m') === 0 && chord.indexOf('maj') !== 0) || chord.indexOf('min') === 0) {
             note = note + 'm';
         }

@@ -17,7 +17,7 @@ function Section() {
 
 Section.prototype.addLine = function (line) {
 	this.lines.push(line);
-}
+};
 
 function Line() {
 	this.lineSegments = [];
