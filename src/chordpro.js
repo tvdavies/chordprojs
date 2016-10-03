@@ -60,7 +60,7 @@ module.exports = {
             section = song.createSection();
           }
 
-          section.name = sectionHead[0];
+          section.name = sectionHead[1];
         } else {
           // Lyrics/chords
           lineText.split(chordPattern).forEach(function (word, i) {
