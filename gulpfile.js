@@ -3,7 +3,6 @@ const gulp = require('gulp');
 const shell = require('gulp-shell');
 const jshint = require('gulp-jshint');
 const stylish = require('jshint-stylish');
-//const babel = require('gulp-babel');
 const browserify = require('browserify');
 const concat = require('gulp-concat');
 const sourcemaps = require('gulp-sourcemaps');
@@ -20,7 +19,6 @@ var banner = [
   ' * ${pkg.name} - ${pkg.description}',
   ' * @version ${pkg.version}',
   ' * @link ${pkg.homepage}',
-  ' * @copyright Copyright (c) 2016 Servelec Technologies',
   ' */',
   ''
 ].join('\n');
