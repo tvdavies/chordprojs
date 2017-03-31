@@ -1,5 +1,5 @@
 var chai = require('chai'),
-	chordprojs = require('../src/');
+	chordprojs = require('../src/chordpro.js');
 
 var expect = chai.expect;
 
