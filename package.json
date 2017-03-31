@@ -2,7 +2,7 @@
   "name": "chordprojs",
   "version": "0.1.1",
   "description": "Parse and manipulate ChordPro files.",
-  "main": "src/index.js",
+  "main": "src/chordpro.js",
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha"
   },
