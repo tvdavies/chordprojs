@@ -9,4 +9,9 @@ var song = chordprojs.parse("He[Am]llo, [C] it's [G]me [F]");
 
 // Render as HTML
 var html = song.render();
+
+// Transpose the HTML output by passing your desired transpose steps or key into the render function.
+var html = song.render(4);
+OR
+var html = song.render('A');
 ```

@@ -14,7 +14,7 @@ module.exports = {
   parse: function (chordProStr) {
     var commentPattern = /^\s*#.*/;
     var chordPattern = /\[([^\]]*)\]/;
-    var directivePattern = /^{([\w]*):?(.*)?}/;
+    var directivePattern = /([\w]*):(.*)/;
     var sectionHeadPattern = /^([A-z0-9\s]+):(\s*)$/;
     var song = new Song();
     var section = song.createSection();
