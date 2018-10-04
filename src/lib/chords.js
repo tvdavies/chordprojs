@@ -122,77 +122,81 @@ function findKey(chords) {
     }), 'count').key;
 }
 
-function Chord(chordText, transposeProperties) {
-    this.transposeProperties = transposeProperties;
-    this.chordMagicked = chordMagic.parse(chordText);
+class Chord {
+    constructor(chordText, transposeProperties) {
+        this.transposeProperties = transposeProperties;
+        this.chordMagicked = chordMagic.parse(chordText);
+    }
+
+    getText() {
+        var chord = this.chordMagicked;
+        var transpose = this.transposeProperties.transpose;
+
+        if (this.transposeProperties.targetKey !== null) {
+            // Work out transpose from original key
+            transpose = getTranspose(this.transposeProperties.origKey, this.transposeProperties.targetKey);
+        } else {
+            // Get the target key from the transpose
+            this.transposeProperties.targetKey = chordMagic.prettyPrint(chordMagic.transpose(chordMagic.parse(this.transposeProperties.origKey), transpose));
+        }
+
+        if (transpose !== 0) {
+            chord = chordMagic.transpose(this.chordMagicked, transpose);
+        }
+
+        var chordText = chordMagic.prettyPrint(chord);
+
+        if (chordText.length > 1 && chordText.indexOf('b') > -1 && sharps.indexOf(this.transposeProperties.targetKey) > -1) {
+            chordText = getSharpEquivalent(chordText);
+        }
+
+        return chordText;
+    }
+
+    getOrigText() {
+        return chordMagic.prettyPrint(this.chordMagicked);
+    }
 }
 
-Chord.prototype.getText = function () {
-    var chord = this.chordMagicked;
-    var transpose = this.transposeProperties.transpose;
-
-    if (this.transposeProperties.targetKey !== null) {
-        // Work out transpose from original key
-        transpose = getTranspose(this.transposeProperties.origKey, this.transposeProperties.targetKey);
-    } else {
-        // Get the target key from the transpose
-        this.transposeProperties.targetKey = chordMagic.prettyPrint(chordMagic.transpose(chordMagic.parse(this.transposeProperties.origKey), transpose));
+class Chords {
+    constructor() {
+        this.chords = [];
+        this.transposeProperties = {
+            origKey: '',
+            targetKey: null,
+            transpose: 0
+        };
     }
 
-    if (transpose !== 0) {
-        chord = chordMagic.transpose(this.chordMagicked, transpose);
+    getOrigKey() {
+        return this.transposeProperties.origKey;
     }
 
-    var chordText = chordMagic.prettyPrint(chord);
-
-    if (chordText.length > 1 && chordText.indexOf('b') > -1 && sharps.indexOf(this.transposeProperties.targetKey) > -1) {
-        chordText = getSharpEquivalent(chordText);
+    getTargetKey() {
+        return this.transposeProperties.targetKey;
     }
 
-    return chordText;
-};
+    setTargetKey(targetKey) {
+        targetKey = chordMagic.parse(targetKey).root;
+        if (notes.indexOf(targetKey) > -1) {
+            this.transposeProperties.targetKey = targetKey;
+        }
+    }
 
-Chord.prototype.getOrigText = function () {
-    return chordMagic.prettyPrint(this.chordMagicked);
-};
+    setTranspose(transpose) {
+        this.transposeProperties.transpose = transpose;
+        this.transposeProperties.targetKey = null;
+    }
 
-function Chords() {
-    this.chords = [];
-    this.transposeProperties = {
-        origKey: '',
-        targetKey: null,
-        transpose: 0
-    };
+    createChord(chordText) {
+        var chord = new Chord(chordText, this.transposeProperties);
+        this.chords.push(chord);
+        // Detect key
+        this.transposeProperties.origKey = findKey(this.chords.map(function (chord) {
+            return chord.getOrigText();
+        }));
+        return chord;
+    }
 }
-
-Chords.prototype.getOrigKey = function () {
-    return this.transposeProperties.origKey;
-};
-
-Chords.prototype.getTargetKey = function () {
-    return this.transposeProperties.targetKey;
-};
-
-Chords.prototype.setTargetKey = function (targetKey) {
-    targetKey = chordMagic.parse(targetKey).root;
-    if (notes.indexOf(targetKey) > -1) {
-        this.transposeProperties.targetKey = targetKey;
-    }
-};
-
-Chords.prototype.setTranspose = function (transpose) {
-    this.transposeProperties.transpose = transpose;
-    this.transposeProperties.targetKey = null;
-};
-
-Chords.prototype.createChord = function (chordText) {
-    var chord = new Chord(chordText, this.transposeProperties);
-    this.chords.push(chord);
-    // Detect key
-    this.transposeProperties.origKey = findKey(this.chords.map(function (chord) {
-        return chord.getOrigText();
-    }));
-    return chord;
-};
 
 module.exports = Chords;
