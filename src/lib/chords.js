@@ -24,13 +24,13 @@ var intervals = [
 function getSharpEquivalent(chordText) {
     return chordText.split("/").map(function (val) {
         if (val.indexOf('b') === 1) {
-          var idx = notes.indexOf(val.substring(0, 2)) - 1;
+            var idx = notes.indexOf(val.substring(0, 2)) - 1;
 
-          if (idx < 0) {
-              idx = notes.length - 1;
-          }
+            if (idx < 0) {
+                idx = notes.length - 1;
+            }
 
-          return notes[idx] + '#' + val.substring(2);
+            return notes[idx] + '#' + val.substring(2);
         }
 
         return val;
