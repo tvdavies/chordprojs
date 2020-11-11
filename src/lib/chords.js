@@ -119,17 +119,20 @@ function findKey(chords) {
     // Return the most likely (most frequent) key for the chords passed in.
     return _.maxBy(_.map(keys, function (val, key) {
         return {key: key, count: val};
-    }), 'count').key;
+    }), 'count').key || '';
 }
 
 function Chord(chordText, transposeProperties) {
     this.transposeProperties = transposeProperties;
-    this.chordMagicked = chordMagic.parse(chordText);
+    if (chordText.match(/\w+/)) this.chordMagicked = chordMagic.parse(chordText);
+    else this.text = chordText;
 }
 
 Chord.prototype.getText = function () {
     var chord = this.chordMagicked;
     var transpose = this.transposeProperties.transpose;
+
+    if (!chord) return this.text;
 
     if (this.transposeProperties.targetKey !== null) {
         // Work out transpose from original key
@@ -153,7 +156,9 @@ Chord.prototype.getText = function () {
 };
 
 Chord.prototype.getOrigText = function () {
-    return chordMagic.prettyPrint(this.chordMagicked);
+    if (this.chordMagicked)
+        return chordMagic.prettyPrint(this.chordMagicked);
+    else return this.text;
 };
 
 function Chords() {
@@ -187,11 +192,14 @@ Chords.prototype.setTranspose = function (transpose) {
 
 Chords.prototype.createChord = function (chordText) {
     var chord = new Chord(chordText, this.transposeProperties);
+
     this.chords.push(chord);
-    // Detect key
-    this.transposeProperties.origKey = findKey(this.chords.map(function (chord) {
-        return chord.getOrigText();
-    }));
+    if (chord.chordMagicked) {
+        // Detect key
+        this.transposeProperties.origKey = findKey(this.chords.map(function (chord) {
+            return chord.getOrigText();
+        }));
+    }
     return chord;
 };
 
